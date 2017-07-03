@@ -10,16 +10,16 @@
   <body>
     <article class="container">
       <section class="score" id="score-team-1">
-        <span>450</span>
+        <p>Team 1 <br> <br> <span>450</span></p>
       </section>
-      <section id="team-1">
 
-      </section>
-      <section id="team-2">
+      <section id="team-1"></section>
 
-      </section>
+      <section id="team-2"></section>
+
       <section class="score" id="score-team-1">
-        <span>450</span>
+        <p>Team 2 <br> <br> <span>450</span></p>
+
       </section>
 
       <section id="targetPoints"><p>Objetivo</p><p>1000</p></section>
@@ -28,6 +28,13 @@
   src="https://code.jquery.com/jquery-3.2.1.js"
   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
   crossorigin="anonymous"></script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    
+
+  </script>
 
 </body>
 </html>

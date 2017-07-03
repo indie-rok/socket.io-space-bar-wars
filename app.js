@@ -22,5 +22,9 @@ app.get("/team2", (req,res) => {
   res.sendFile(__dirname + '/public/team2.html');
 })
 
+io.on("connection",() => {
+  console.log("connected");
+})
+
 
 http.listen(8000,()=>console.log('working on 8000'));

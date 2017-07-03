@@ -31,7 +31,7 @@ html,body{
   font-family: 'Press Start 2P', cursive;
 }
 
-.score span{
+.score p{
   vertical-align: middle;
   height: 100%;
   display: table-cell;
