@@ -6,7 +6,7 @@ var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
 var redis = require("redis");
-var client = redis.createClient();
+var client = redis.createClient(process.env.REDIS_URL || null);
 
 client.on('connect',()=>{
   client.set('game:scoreToWin',10);
@@ -72,4 +72,4 @@ function getCurrentScore(callback){
   });
 }
 
-http.listen(process.env.PORT,()=>console.log('working on 8000'));
+http.listen(process.env.PORT|| 8000,()=>console.log('working on 8000'));
