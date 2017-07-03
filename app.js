@@ -12,7 +12,7 @@ client.on('connect',()=>{
   client.set('game:scoreToWin',10);
   client.set('game:team-1-score',5);
   client.set('game:team-2-score',5);
-});
+})
 
 app.use('/public', express.static(__dirname + '/public'));
 
@@ -25,32 +25,41 @@ app.get("/team1", (req,res) => {
 })
 
 app.get("/team2", (req,res) => {
+  debugger;
   res.sendFile(__dirname + '/public/team2.html');
 })
 
 
 
 io.on("connection",(socket) => {
+  getCurrentScore( (currentScore)=>io.sockets.emit('update score', currentScore) )
 
   socket.on("team 1 press",()=>{
-    client.incr('game-team-1-score', (err,score) => {
-      io.sockets.emit('update score', getCurrentScore());
-    })
+    client.incr('game:team-1-score');
+    client.decr('game:team-2-score')
+    getCurrentScore( (currentScore)=>io.sockets.emit('update score', currentScore) )
   })
+
+  socket.on("team 2 press",()=>{
+    client.incr('game:team-2-score');
+    client.decr('game:team-1-score')
+    getCurrentScore( (currentScore)=>io.sockets.emit('update score', currentScore) )
+  })
+
 })
 
-function getCurrentScore(){
-
-
-
-  client.get("game:scoreToWin", (err,score) => gameData.scoreToWin = score );
-
-  client.get('game:team-1-score', (err,score) => gameData.scoreA = score);
-
-  client.get('game:team-2-score', (err,score) => gameData.scoreB = score);
-
-
-};
-
+function getCurrentScore(callback){
+  let gameData = {};
+  client.get("game:scoreToWin", (err,score) => {
+    gameData.scoreToWin = score;
+    client.get('game:team-1-score', (err,scoreA) => {
+      gameData.scoreA = scoreA;
+      client.get('game:team-2-score', (err,scoreB) => {
+        gameData.scoreB = scoreB;
+        callback(gameData);
+      });
+    });
+  });
+}
 
 http.listen(8000,()=>console.log('working on 8000'));

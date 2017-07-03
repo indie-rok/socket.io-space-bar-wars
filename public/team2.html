@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Team 1</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link rel="stylesheet" href="public/css/style.css">
+
+  </head>
+  <body>
+    <article class="container">
+      <section class="score" id="score-team-1">
+        <p>Team 1 <br> <br> <span>450</span></p>
+      </section>
+
+      <section id="team-1"></section>
+
+      <section id="team-2"></section>
+
+      <section class="score" id="score-team-1">
+        <p>Team 2 <br> <br> <span>450</span></p>
+
+      </section>
+
+      <section id="targetPoints"><p>Objetivo</p><p>1000</p></section>
+    </article>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    $(window).keypress(function(e) {
+        if (e.which === 32) {
+          socket.emit("team 2 press")
+        }
+    });
+
+    socket.on('update score',(gameData) => {
+      const widths = calculateWidthFromScore(gameData);
+      console.log(widths);
+      renderWidths(widths);
+    })
+
+    function calculateWidthFromScore(gameData){
+      return {
+        widthTeamA:(gameData.scoreA * 90) / (gameData.scoreToWin),
+        widthTeamB:(gameData.scoreB * 90) / (gameData.scoreToWin)
+      };
+    }
+
+    function renderWidths(widths){
+      $("#team-1").css("width",widths.widthTeamA+'%');
+      $("#team-2").css("width",widths.widthTeamB+'%');
+    }
+
+  </script>
+
+</body>
+</html>
