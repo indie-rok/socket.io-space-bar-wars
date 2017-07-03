@@ -34,7 +34,8 @@
     var socket = io();
     $(window).keypress(function(e) {
         if (e.which === 32) {
-          socket.emit("team 1 press")
+          socket.emit("team 1 press");
+          socket.emit("keypress");
         }
     });
 
@@ -43,6 +44,11 @@
       renderWidths(widths);
       modifyNumericScores(gameData);
     })
+
+    socket.on('game end', (winner) => {
+      $(window).unbind("keypress");
+      alert( winner + "has won.");
+    });
 
     function calculateWidthFromScore(gameData){
       return {
@@ -54,7 +60,7 @@
     function modifyNumericScores(gameData){
       let $scoreTeam1 = $("#score-team-1");
       let $scoreTeam2 = $("#score-team-2");
-      let $scoreToWin = $("#score-team-3");
+      let $scoreToWin = $("#score-to-win");
 
       $scoreTeam1.text(gameData.scoreA);
       $scoreTeam2.text(gameData.scoreB);

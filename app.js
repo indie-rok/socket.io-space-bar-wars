@@ -25,7 +25,6 @@ app.get("/team1", (req,res) => {
 })
 
 app.get("/team2", (req,res) => {
-  debugger;
   res.sendFile(__dirname + '/public/team2.html');
 })
 
@@ -33,6 +32,17 @@ app.get("/team2", (req,res) => {
 
 io.on("connection",(socket) => {
   getCurrentScore( (currentScore)=>io.sockets.emit('update score', currentScore) )
+
+  socket.on("keypress",() => {
+    getCurrentScore( (gameData) => {
+      if(parseInt(gameData.scoreA) >= parseInt(gameData.scoreToWin)){
+        io.sockets.emit('game end',"team a")
+      }
+      else if (parseInt(gameData.scoreB) >= parseInt(gameData.scoreToWin)) {
+        io.sockets.emit('game end',"team b")
+      }
+    });
+  });
 
   socket.on("team 1 press",()=>{
     client.incr('game:team-1-score');
