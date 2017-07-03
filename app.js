@@ -72,4 +72,4 @@ function getCurrentScore(callback){
   });
 }
 
-http.listen(8000,()=>console.log('working on 8000'));
+http.listen(process.env.PORT,()=>console.log('working on 8000'));
