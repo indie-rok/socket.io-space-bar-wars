@@ -10,6 +10,10 @@ var client = redis.createClient();
 
 app.use('/public', express.static(__dirname + '/public'));
 
+app.get("/", (req,res) => {
+  res.sendFile(__dirname + '/public/index.html');
+})
+
 app.get("/team1", (req,res) => {
   res.sendFile(__dirname + '/public/team1.html');
 })
@@ -19,4 +23,4 @@ app.get("/team2", (req,res) => {
 })
 
 
-http.serve(8000,()=>console.log('working on 8000'));
+http.listen(8000,()=>console.log('working on 8000'));
